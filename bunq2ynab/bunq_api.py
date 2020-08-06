@@ -62,10 +62,15 @@ def get_transactions(user_id, account_id):
         if not last_day or last_day < date:
             last_day = date
 
+        iban_descr = ""
+        if p["counterparty_alias"]["iban"]:
+            iban_descr = " (" + p["counterparty_alias"]["iban"] + ")"
+        payee_descr = p["counterparty_alias"]["display_name"][:50-len(iban_descr)] + iban_descr
+
         transactions.append({
             "amount": p["amount"]["value"],
             "date": date,
-            "payee": p["counterparty_alias"]["display_name"],
+            "payee": payee_descr,
             "description": p["description"].strip()
         })
 
